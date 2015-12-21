@@ -6,6 +6,8 @@
 //  Copyright © 2015 Michael Klein. All rights reserved.
 //
 
+// Utilizes Eigen 2.8.2 and Assimp 3.2
+
 //#include <iostream>
 //
 //int main(int argc, const char * argv[]) {
@@ -23,7 +25,7 @@ using namespace std;
 typedef Matrix<double, 24, 24> Matrix24f;
 typedef Matrix<double, 24, 1> Vector24f;
 
-Vector24f binvecs(int n0){
+Vector24f binvec(int n0){
     Vector24f out;
     int n = n0;
     for (int i = 0; i != 24; i++) {
@@ -41,7 +43,12 @@ Vector3d extract3d(Vector24f v24){
     return v3;
 }
 
-
+Vector3d transd3d(int n, Matrix24f lmat, Matrix24f tmat){
+    Vector24f v = binvec(n);
+    v = lmat*v;
+    v = tmat*v;
+    return extract3d(v);
+}
 
 int main()
 {
@@ -103,4 +110,8 @@ int main()
     Vector3d v(1,2,3);
     
     cout << "m * v =" << endl << m * v << endl;
+    
+    Vector3d vtest = transd3d(1234, leech, trans);
+    
+    cout << vtest << endl;
 }
