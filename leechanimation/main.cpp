@@ -54,17 +54,23 @@ Vector3d transd3d(int n, Matrix24f lmat, Matrix24f tmat){
 
 #define DIMOFFSET 100
 
+bool checkv(Vector3d v){
+    return (v(0) >= DIMOFFSET) && (v(1) >= DIMOFFSET) && (v(2) >= DIMOFFSET);
+}
+
 void printable(ofstream& vectorz, int n, Matrix24f lmat, Matrix24f tmat){
     Vector24f v0 = binvec(n);
     v0 = lmat*v0;
     v0 = tmat*v0;
     Vector3d v1 = extract3d(v0);
-    vectorz << std::fixed << std::setprecision(10) << (v1(0) + DIMOFFSET);
-    vectorz << " ";
-    vectorz << std::fixed << std::setprecision(10) << (v1(1) + DIMOFFSET);
-    vectorz << " ";
-    vectorz << std::fixed << std::setprecision(10) << (v1(2) + DIMOFFSET);
-    vectorz << "\n";
+    if (checkv(v1)) {
+        vectorz << std::fixed << std::setprecision(10) << (v1(0) + DIMOFFSET);
+        vectorz << " ";
+        vectorz << std::fixed << std::setprecision(10) << (v1(1) + DIMOFFSET);
+        vectorz << " ";
+        vectorz << std::fixed << std::setprecision(10) << (v1(2) + DIMOFFSET);
+        vectorz << "\n";
+    }
 }
 
 void writevs(string filename, int howmany, Matrix24f lmat, Matrix24f tmat){
@@ -155,14 +161,4 @@ int main()
     
     
     
-//    ofstream vectorfile;
-//    vectorfile.open("vectors.txt");
-//    
-//    for (int vpos = 1; vpos != 1000; vpos++) {
-//        printable(vectorfile, vpos, leech, trans);
-//    }
-//    
-//    vectorfile << "ENDFRAME\n";
-//    
-//    vectorfile.close();
 }
