@@ -17,6 +17,8 @@
 //}
 
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include </usr/local/include/eigen3/Eigen/Dense>
 #include </usr/local/include/eigen3/unsupported/Eigen/MatrixFunctions>
 using namespace Eigen;
@@ -49,6 +51,20 @@ Vector3d transd3d(int n, Matrix24f lmat, Matrix24f tmat){
     v = tmat*v;
     return extract3d(v);
 }
+
+void printable(ofstream& vectorz, int n, Matrix24f lmat, Matrix24f tmat){
+    Vector24f v0 = binvec(n);
+    v0 = lmat*v0;
+    v0 = tmat*v0;
+    Vector3d v1 = extract3d(v0);
+    vectorz << std::fixed << std::setprecision(10) << v1(0);
+    vectorz << " ";
+    vectorz << std::fixed << std::setprecision(10) << v1(1);
+    vectorz << " ";
+    vectorz << std::fixed << std::setprecision(10) << v1(2);
+    vectorz << "\n";
+}
+
 
 int main()
 {
@@ -108,10 +124,21 @@ int main()
     m = (m + Matrix3d::Constant(1.2)) * 50;
     cout << "m =" << endl << m << endl;
     Vector3d v(1,2,3);
-    
     cout << "m * v =" << endl << m * v << endl;
-    
     Vector3d vtest = transd3d(1234, leech, trans);
-    
     cout << vtest << endl;
+
+    
+    
+    
+    std::ofstream vectorfile;
+    vectorfile.open("vectors.txt");
+    
+    for (int vpos = 1; vpos != 1000; vpos++) {
+        printable(vectorfile, vpos, leech, trans);
+    }
+    
+    vectorfile << "ENDFRAME\n";
+    
+    vectorfile.close();
 }
