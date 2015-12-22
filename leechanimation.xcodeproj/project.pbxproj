@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		31B164921C27B0E000AFE2A9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31B164911C27B0E000AFE2A9 /* main.cpp */; };
+		31C2F04E1C28FFA9001724D6 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C2F04D1C28FFA9001724D6 /* libboost_system-mt.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		31B1648E1C27B0E000AFE2A9 /* leechanimation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = leechanimation; sourceTree = BUILT_PRODUCTS_DIR; };
 		31B164911C27B0E000AFE2A9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		31C2F04D1C28FFA9001724D6 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libboost_system-mt.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31C2F04E1C28FFA9001724D6 /* libboost_system-mt.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +60,7 @@
 		31B164901C27B0E000AFE2A9 /* leechanimation */ = {
 			isa = PBXGroup;
 			children = (
+				31C2F04D1C28FFA9001724D6 /* libboost_system-mt.dylib */,
 				31B164911C27B0E000AFE2A9 /* main.cpp */,
 			);
 			path = leechanimation;
@@ -207,6 +211,10 @@
 		31B164961C27B0E000AFE2A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/leechanimation",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -214,6 +222,10 @@
 		31B164971C27B0E000AFE2A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/leechanimation",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -237,6 +249,7 @@
 				31B164971C27B0E000AFE2A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
