@@ -6,7 +6,11 @@
 //  Copyright © 2015 Michael Klein. All rights reserved.
 //
 
-// Utilizes Eigen 3 and PCL 1.7
+
+// TODO: modify mesh parameters to better fit this case
+
+
+// Utilizes Eigen 3 and PCL 1.8
 
 //#include <iostream>
 //
@@ -126,7 +130,7 @@ Matrix24f nextmat(Matrix24f mat0, double power){
 //    return point;
 //}
 
-#define POINTCLOUDSIZE 10000
+#define POINTCLOUDSIZE 100000
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr computecloud(double power, Matrix24f lmat, Matrix24f tmat0){
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
@@ -161,7 +165,7 @@ void rendercloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, std::string filename
     tree->setInputCloud (cloud);
     n.setInputCloud (cloud);
     n.setSearchMethod (tree);
-    n.setKSearch (20);
+    n.setKSearch (1000);
     n.compute (*normals);
     //* normals should not contain the point normals + surface curvatures
     
@@ -179,15 +183,25 @@ void rendercloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, std::string filename
     pcl::PolygonMesh triangles;
     
     // Set the maximum distance between connected points (maximum edge length)
-    gp3.setSearchRadius (0.025);
+//    gp3.setSearchRadius (0.025);
+    gp3.setSearchRadius (8.0);
     
     // Set typical values for the parameters
-    gp3.setMu (2.5);
-    gp3.setMaximumNearestNeighbors (100);
-    gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
-    gp3.setMinimumAngle(M_PI/18); // 10 degrees
-    gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
+//    gp3.setMu (2.5);
+//    gp3.setMaximumNearestNeighbors (100);
+//    gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+//    gp3.setMinimumAngle(M_PI/18); // 10 degrees
+//    gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
+//    gp3.setNormalConsistency(false);
+
+    gp3.setMu (4.0);
+    gp3.setMaximumNearestNeighbors (3000);
+    gp3.setMaximumSurfaceAngle(M_PI/4);
+    gp3.setMinimumAngle(M_PI/12);
+    gp3.setMaximumAngle(2*M_PI/3);
     gp3.setNormalConsistency(false);
+    gp3.setConsistentVertexOrdering(false);
+
     
     // Get result
     gp3.setInputCloud (cloud_with_normals);
@@ -195,13 +209,15 @@ void rendercloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, std::string filename
     gp3.reconstruct (triangles);
     
     // Additional vertex information
-    std::vector<int> parts = gp3.getPartIDs();
-    std::vector<int> states = gp3.getPointStates();
+    // I believe that this is unneeded for simply exporting the vtk..
+//    std::vector<int> parts = gp3.getPartIDs();
+//    std::vector<int> states = gp3.getPointStates();
     
     pcl::io::saveVTKFile (filename, triangles);
 }
 
 void doitall(int n, Matrix24f lmat, Matrix24f tmat0){
+    cout << "power: " << n << endl;
     double power = (double) (n / (POWERDIVISOR));
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = computecloud(power, lmat, tmat0);
 
@@ -276,9 +292,17 @@ int main()
 //    double power = 0;
 //    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = makecloud(double power, Matrix24f leech, Matrix24f trans);
     
+//    for (int frame = 0; frame < 18000; frame++){
+//        doitall(frame,leech,trans);
+//    }
     
-    doitall(0, leech, trans);
-    
+//    doitall(1, leech, trans);
+//    doitall(12, leech, trans);
+//    doitall(123, leech, trans);
+//    doitall(1234, leech, trans);
+//    doitall(12345, leech, trans);
+    doitall(123456, leech, trans);
+    doitall(1234567, leech, trans);
     
     return 0;
 }
